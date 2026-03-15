@@ -1,0 +1,11 @@
+name: Daily Birthday Cron
+
+on:
+  schedule:
+    - cron: '0 13 * * *' # 8am EST / 1pm UTC
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -f "${{ secrets.CRON_URL }}"

@@ -23,6 +23,16 @@ app.get("/health", (c) => {
 	return c.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+app.get("/cron", async (c) => {
+	const key = c.req.query("key");
+	if (key !== process.env.CRON_SECRET) {
+		return c.json({ error: "unauthorized" }, 401);
+	}
+	console.log("[Cron] Triggered via /cron endpoint");
+	await runDailyCron();
+	return c.json({ status: "ok" });
+});
+
 const port = parseInt(process.env.PORT || "3000");
 
 console.log(`[Server] Listening on port ${port}`);
