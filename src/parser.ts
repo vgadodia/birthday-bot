@@ -3,18 +3,18 @@ import OpenAI from "openai";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export type Intent =
-  | { action: "add"; name: string; month: number; day: number; year?: number }
-  | {
-      action: "update";
-      name: string;
-      month: number;
-      day: number;
-      year?: number;
-    }
-  | { action: "delete"; name: string }
-  | { action: "list" }
-  | { action: "help" }
-  | { action: "unknown" };
+	| { action: "add"; name: string; month: number; day: number; year?: number }
+	| {
+			action: "update";
+			name: string;
+			month: number;
+			day: number;
+			year?: number;
+	  }
+	| { action: "delete"; name: string }
+	| { action: "list" }
+	| { action: "help" }
+	| { action: "unknown" };
 
 const systemPrompt = `You are a birthday reminder assistant that parses SMS messages into structured commands.
 
@@ -44,25 +44,25 @@ Examples:
 "what can you do" → {"action":"help"}`;
 
 export async function parseIntent(message: string): Promise<Intent> {
-  try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message },
-      ],
-      temperature: 0,
-    });
+	try {
+		const response = await openai.chat.completions.create({
+			model: "gpt-4o-mini",
+			messages: [
+				{ role: "system", content: systemPrompt },
+				{ role: "user", content: message },
+			],
+			temperature: 0,
+		});
 
-    const text = response.choices[0]?.message?.content?.trim();
-    if (!text) return { action: "unknown" };
+		const text = response.choices[0]?.message?.content?.trim();
+		if (!text) return { action: "unknown" };
 
-    const parsed = JSON.parse(text);
+		const parsed = JSON.parse(text);
 
-    if (parsed.year === null) delete parsed.year;
+		if (parsed.year === null) delete parsed.year;
 
-    return parsed as Intent;
-  } catch {
-    return { action: "unknown" };
-  }
+		return parsed as Intent;
+	} catch {
+		return { action: "unknown" };
+	}
 }
