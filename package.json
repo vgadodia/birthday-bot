@@ -10,6 +10,7 @@
     "hono": "latest",
     "openai": "latest",
     "postgres": "latest",
+    "sendblue": "latest",
     "twilio": "latest"
   },
   "devDependencies": {
