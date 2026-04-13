@@ -6,7 +6,7 @@ import { runDailyCron } from "./cron";
 // If running as a Railway cron job, execute and exit
 if (process.env.RAILWAY_CRON_JOB_NAME) {
 	console.log("[Cron] Running daily cron job...");
-	await initDb();
+	// await initDb();
 	await runDailyCron();
 	console.log("[Cron] Done.");
 	process.exit(0);

@@ -62,7 +62,8 @@ export async function parseIntent(message: string): Promise<Intent> {
 		if (parsed.year === null) delete parsed.year;
 
 		return parsed as Intent;
-	} catch {
+	} catch (err) {
+		console.error("[Parser] Error:", err);
 		return { action: "unknown" };
 	}
 }

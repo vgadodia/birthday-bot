@@ -10,6 +10,12 @@ function formatMonthDay(month: number, day: number): string {
 }
 
 export async function handleWebhook(c: Context) {
+	const headerSecret = c.req.header("x-sendblue-secret") ?? c.req.header("x-webhook-secret");
+	if (headerSecret !== process.env.SENDBLUE_WEBHOOK_SECRET!) {
+		console.log("[Webhook] Unauthorized request — bad or missing secret");
+		return c.json({ error: "unauthorized" }, 401);
+	}
+
 	const body = await c.req.json();
 	const from = body.from_number as string;
 	const text = body.content as string;
