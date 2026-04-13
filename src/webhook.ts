@@ -10,9 +10,9 @@ function formatMonthDay(month: number, day: number): string {
 }
 
 export async function handleWebhook(c: Context) {
-	const body = await c.req.parseBody();
-	const from = body["From"] as string;
-	const text = body["Body"] as string;
+	const body = await c.req.json();
+	const from = body.from_number as string;
+	const text = body.content as string;
 
 	console.log(`[SMS] From: ${from} | Body: ${text}`);
 
