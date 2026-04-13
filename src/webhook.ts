@@ -10,6 +10,9 @@ function formatMonthDay(month: number, day: number): string {
 }
 
 export async function handleWebhook(c: Context) {
+	// Debug: log all headers to find Sendblue's secret header name
+	console.log("[Webhook] Headers:", JSON.stringify(Object.fromEntries(c.req.raw.headers.entries())));
+
 	const headerSecret = c.req.header("x-sendblue-secret") ?? c.req.header("x-webhook-secret");
 	if (headerSecret !== process.env.SENDBLUE_WEBHOOK_SECRET!) {
 		console.log("[Webhook] Unauthorized request — bad or missing secret");
